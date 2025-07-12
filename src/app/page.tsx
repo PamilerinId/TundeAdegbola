@@ -18,38 +18,67 @@ export default function Home() {
       ></div>
       
       {/* Mobile Navigation */}
-      <nav className="fixed top-4 left-4 right-4 md:top-6 md:left-1/2 md:transform md:-translate-x-1/2 md:right-auto md:w-auto z-50 bg-white/80 backdrop-blur-md border border-stone-200 rounded-full px-4 md:px-8 py-3 shadow-lg">
-        <div className="flex items-center justify-between md:justify-center md:space-x-8">
-          <div className="text-stone-800 font-bold text-sm">Tunde Adegbola</div>
-          
-          {/* Mobile menu button */}
-          <button 
-            className="md:hidden w-8 h-8 flex items-center justify-center"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-          >
-            <div className="space-y-1">
-              <div className={`w-5 h-0.5 bg-stone-600 transition-all ${isMenuOpen ? 'rotate-45 translate-y-1.5' : ''}`}></div>
-              <div className={`w-5 h-0.5 bg-stone-600 transition-all ${isMenuOpen ? 'opacity-0' : ''}`}></div>
-              <div className={`w-5 h-0.5 bg-stone-600 transition-all ${isMenuOpen ? '-rotate-45 -translate-y-1.5' : ''}`}></div>
+      <nav className="fixed top-4 left-4 right-4 md:top-6 md:left-1/2 md:transform md:-translate-x-1/2 md:right-auto md:w-auto z-50">
+        <div className="bg-white/90 backdrop-blur-md border border-stone-200 rounded-full shadow-lg">
+          <div className="flex items-center justify-between md:justify-center md:space-x-8 px-4 md:px-8 py-3">
+            <div className="text-stone-800 font-bold text-sm">Tunde Adegbola</div>
+            
+            {/* Mobile menu button */}
+            <button 
+              className="md:hidden w-8 h-8 flex items-center justify-center relative"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              aria-label="Toggle menu"
+            >
+              <div className="w-5 h-4 relative flex flex-col justify-between">
+                <div className={`w-full h-0.5 bg-stone-600 transform transition-all duration-300 origin-center ${isMenuOpen ? 'rotate-45 translate-y-1.5' : ''}`}></div>
+                <div className={`w-full h-0.5 bg-stone-600 transition-all duration-300 ${isMenuOpen ? 'opacity-0' : ''}`}></div>
+                <div className={`w-full h-0.5 bg-stone-600 transform transition-all duration-300 origin-center ${isMenuOpen ? '-rotate-45 -translate-y-1.5' : ''}`}></div>
+              </div>
+            </button>
+            
+            {/* Desktop navigation */}
+            <div className="hidden md:flex space-x-6 text-sm">
+              <a href="#about" className="text-stone-600 hover:text-stone-900 transition-colors">About</a>
+              <a href="#work" className="text-stone-600 hover:text-stone-900 transition-colors">Work</a>
+              <a href="#speaking" className="text-stone-600 hover:text-stone-900 transition-colors">Speaking</a>
+              <a href="#contact" className="text-stone-600 hover:text-stone-900 transition-colors">Contact</a>
             </div>
-          </button>
-          
-          {/* Desktop navigation */}
-          <div className="hidden md:flex space-x-6 text-sm">
-            <a href="#about" className="text-stone-600 hover:text-stone-900 transition-colors">About</a>
-            <a href="#work" className="text-stone-600 hover:text-stone-900 transition-colors">Work</a>
-            <a href="#speaking" className="text-stone-600 hover:text-stone-900 transition-colors">Speaking</a>
-            <a href="#contact" className="text-stone-600 hover:text-stone-900 transition-colors">Contact</a>
           </div>
         </div>
         
-        {/* Mobile menu dropdown */}
-        <div className={`md:hidden mt-4 pt-4 border-t border-stone-200 transition-all duration-300 ${isMenuOpen ? 'opacity-100 max-h-40' : 'opacity-0 max-h-0 overflow-hidden'}`}>
-          <div className="flex flex-col space-y-3 text-sm">
-            <a href="#about" className="text-stone-600 hover:text-stone-900 transition-colors py-2" onClick={() => setIsMenuOpen(false)}>About</a>
-            <a href="#work" className="text-stone-600 hover:text-stone-900 transition-colors py-2" onClick={() => setIsMenuOpen(false)}>Work</a>
-            <a href="#speaking" className="text-stone-600 hover:text-stone-900 transition-colors py-2" onClick={() => setIsMenuOpen(false)}>Speaking</a>
-            <a href="#contact" className="text-stone-600 hover:text-stone-900 transition-colors py-2" onClick={() => setIsMenuOpen(false)}>Contact</a>
+        {/* Mobile menu dropdown - positioned absolutely */}
+        <div className={`md:hidden absolute top-full left-0 right-0 mt-2 bg-white/95 backdrop-blur-md border border-stone-200 rounded-2xl shadow-lg overflow-hidden transition-all duration-300 ease-in-out ${isMenuOpen ? 'max-h-64 opacity-100 translate-y-0' : 'max-h-0 opacity-0 -translate-y-2'}`}>
+          <div className="p-4">
+            <div className="flex flex-col space-y-1">
+              <a 
+                href="#about" 
+                className="text-stone-600 hover:text-stone-900 hover:bg-stone-50 transition-all py-3 px-4 rounded-xl text-sm font-medium" 
+                onClick={() => setIsMenuOpen(false)}
+              >
+                About
+              </a>
+              <a 
+                href="#work" 
+                className="text-stone-600 hover:text-stone-900 hover:bg-stone-50 transition-all py-3 px-4 rounded-xl text-sm font-medium" 
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Work
+              </a>
+              <a 
+                href="#speaking" 
+                className="text-stone-600 hover:text-stone-900 hover:bg-stone-50 transition-all py-3 px-4 rounded-xl text-sm font-medium" 
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Speaking
+              </a>
+              <a 
+                href="#contact" 
+                className="text-stone-600 hover:text-stone-900 hover:bg-stone-50 transition-all py-3 px-4 rounded-xl text-sm font-medium" 
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Contact
+              </a>
+            </div>
           </div>
         </div>
       </nav>
@@ -95,8 +124,8 @@ export default function Home() {
                     </div>
                     <p className="text-base md:text-lg font-medium">Tunde Adegbola</p>
                     <p className="text-sm">Portrait Photo</p>
-                  </div>
-                </div>
+              </div>
+            </div>
               </div>
               
               {/* Floating elements - Smaller on mobile */}
@@ -346,14 +375,14 @@ export default function Home() {
                   <svg className="w-5 md:w-6 h-5 md:h-6 text-amber-700" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
                   </svg>
-                </div>
+              </div>
                 <p className="text-xs text-stone-500 mt-2">Alt-i</p>
               </a>
             </div>
           </div>
         </div>
       </section>
-      
+
       {/* Footer - Mobile optimized */}
       <footer className="relative py-8 md:py-12 bg-stone-900 text-white">
         <div className="max-w-6xl mx-auto px-4 md:px-6 lg:px-8">
