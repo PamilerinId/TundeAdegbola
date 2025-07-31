@@ -1,12 +1,182 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, useCallback } from 'react'
+import Image from 'next/image'
 
 export default function Home() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [showEventPopup, setShowEventPopup] = useState(false)
+  const [showFullImage, setShowFullImage] = useState(false)
+
+  const handleCloseEventPopup = useCallback(() => {
+    setShowEventPopup(false)
+    localStorage.setItem('ta-70th-event-dismissed', 'true')
+  }, [])
+
+  const handleOpenFullImage = useCallback(() => {
+    setShowFullImage(true)
+  }, [])
+
+  const handleCloseFullImage = useCallback(() => {
+    setShowFullImage(false)
+  }, [])
+
+  useEffect(() => {
+    // Check if popup should be shown (within event period and not dismissed)
+    const checkEventPopup = () => {
+      const eventEndDate = new Date('2025-08-08') // 1 week from now
+      const currentDate = new Date()
+      const isDismissed = localStorage.getItem('ta-70th-event-dismissed')
+      
+      if (currentDate <= eventEndDate && !isDismissed) {
+        // Show popup after a short delay for better UX
+        setTimeout(() => {
+          setShowEventPopup(true)
+        }, 1500)
+      }
+    }
+
+    checkEventPopup()
+  }, [])
+
+  // Handle ESC key to close modals and body scroll lock
+  useEffect(() => {
+    const handleEscKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        if (showFullImage) {
+          handleCloseFullImage()
+        } else if (showEventPopup) {
+          handleCloseEventPopup()
+        }
+      }
+    }
+
+    if (showEventPopup || showFullImage) {
+      // Prevent body scroll when any modal is open
+      document.body.style.overflow = 'hidden'
+      document.addEventListener('keydown', handleEscKey)
+    } else {
+      // Restore body scroll when all modals are closed
+      document.body.style.overflow = 'unset'
+    }
+
+    return () => {
+      document.body.style.overflow = 'unset'
+      document.removeEventListener('keydown', handleEscKey)
+    }
+  }, [showEventPopup, showFullImage, handleCloseEventPopup, handleCloseFullImage])
 
   return (
     <div className="min-h-screen bg-stone-50 relative overflow-hidden">
+      {/* Event Popup Modal */}
+      {showEventPopup && (
+        <div 
+          className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+          onClick={handleCloseEventPopup}
+        >
+          <div 
+            className="relative bg-white rounded-3xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden transform transition-all duration-300 ease-out scale-100 opacity-100"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Close button */}
+            <button
+              onClick={handleCloseEventPopup}
+              className="absolute top-4 right-4 z-10 w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg hover:bg-white hover:scale-110 transition-all duration-200"
+              aria-label="Close event announcement"
+            >
+              <svg className="w-5 h-5 text-stone-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+            
+            {/* Event poster */}
+            <div 
+              className="relative w-full h-full min-h-[400px] md:min-h-[500px] cursor-pointer group"
+              onClick={handleOpenFullImage}
+            >
+              <Image
+                src="/programme_events.jpeg"
+                alt="Tunde Adegbola at 70 - Festival and Celebration Events Programme"
+                fill
+                className="object-contain transition-transform duration-300 group-hover:scale-105"
+                priority
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
+              />
+              {/* Click to expand indicator */}
+              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300 flex items-center justify-center">
+                <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white/90 backdrop-blur-sm rounded-full p-3 shadow-lg">
+                  <svg className="w-6 h-6 text-stone-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+            
+            {/* Optional overlay content */}
+            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-6 pointer-events-none">
+              <div className="text-white text-center">
+                <h3 className="text-xl md:text-2xl font-bold mb-2">Join Us in Celebrating!</h3>
+                <p className="text-white/90 text-sm md:text-base mb-2">Tunde Adegbola at 70 - A Festival of Language, Technology & Culture</p>
+                <p className="text-white/70 text-xs md:text-sm flex items-center justify-center gap-1">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                  </svg>
+                  Click to view full details
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Full Image Viewer Modal */}
+      {showFullImage && (
+        <div 
+          className="fixed inset-0 z-[10000] flex items-center justify-center p-4 bg-black/90 backdrop-blur-sm"
+          onClick={handleCloseFullImage}
+        >
+          <div 
+            className="relative w-full h-full max-w-7xl max-h-full"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Close button */}
+            <button
+              onClick={handleCloseFullImage}
+              className="absolute top-4 right-4 z-10 w-12 h-12 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg hover:bg-white hover:scale-110 transition-all duration-200"
+              aria-label="Close full image view"
+            >
+              <svg className="w-6 h-6 text-stone-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+            
+            {/* Full-size image */}
+            <div className="relative w-full h-full">
+              <Image
+                src="/programme_events.jpeg"
+                alt="Tunde Adegbola at 70 - Festival and Celebration Events Programme - Full View"
+                fill
+                className="object-contain"
+                priority
+                sizes="100vw"
+              />
+            </div>
+            
+            {/* Download/Info overlay */}
+            <div className="absolute bottom-4 left-4 right-4">
+              <div className="bg-black/50 backdrop-blur-sm rounded-2xl p-4 text-white text-center">
+                <p className="text-sm md:text-base mb-2">
+                  <strong>Tunde Adegbola at 70</strong> - Festival and Celebration Events Programme
+                </p>
+                <p className="text-xs md:text-sm text-white/80">
+                  July 30 - August 3, 2025 • Multiple venues in Ibadan
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+      
       {/* Fabric texture background */}
       <div 
         className="fixed inset-0 opacity-30 bg-repeat"
@@ -112,19 +282,15 @@ export default function Home() {
             
             {/* Right side - Portrait */}
             <div className="relative order-1 lg:order-2">
-              <div className="relative w-full h-80 sm:h-96 md:h-[500px] lg:h-[600px] rounded-3xl overflow-hidden bg-stone-200 shadow-2xl mx-auto max-w-sm lg:max-w-none">
-                {/* Placeholder for main portrait */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-center text-stone-500">
-                    <div className="w-24 md:w-32 h-24 md:h-32 mx-auto mb-4 md:mb-6 rounded-full bg-stone-300 flex items-center justify-center">
-                      <svg className="w-12 md:w-16 h-12 md:h-16" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                      </svg>
-                    </div>
-                    <p className="text-base md:text-lg font-medium">Tunde Adegbola</p>
-                    <p className="text-sm">Portrait Photo</p>
-              </div>
-            </div>
+              <div className="relative w-full h-80 sm:h-96 md:h-[500px] lg:h-[600px] rounded-3xl overflow-hidden bg-gradient-to-br from-stone-100 to-stone-200 shadow-2xl mx-auto max-w-sm lg:max-w-none">
+                <Image 
+                  src="/ta_no_bg.png" 
+                  alt="Tunde Adegbola - Nigerian polymath and language technology pioneer"
+                  fill
+                  className="object-cover object-center"
+                  priority
+                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                />
               </div>
               
               {/* Floating elements - Smaller on mobile */}
@@ -280,16 +446,13 @@ export default function Home() {
             {/* Left - Image */}
             <div className="relative order-2 lg:order-1">
               <div className="relative w-full h-64 md:h-96 rounded-3xl overflow-hidden bg-stone-200 shadow-xl mx-auto max-w-sm lg:max-w-none">
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-center text-stone-500">
-                    <div className="w-16 md:w-24 h-16 md:h-24 mx-auto mb-3 md:mb-4 rounded-2xl bg-stone-300 flex items-center justify-center">
-                      <svg className="w-8 md:w-12 h-8 md:h-12" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 14c1.66 0 2.99-1.34 2.99-3L15 5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z"/>
-                      </svg>
-                    </div>
-                    <p className="text-base md:text-lg font-medium">Speaking Engagement</p>
-                  </div>
-                </div>
+                <Image 
+                  src="/1 344.JPG" 
+                  alt="Tunde Adegbola speaking at a conference - sharing insights on language technology and African cultural preservation"
+                  fill
+                  className="object-cover object-center"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                />
               </div>
             </div>
             
