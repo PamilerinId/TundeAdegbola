@@ -9,6 +9,11 @@ export const metadata: Metadata = {
   description: 'Official website of Tunde Adegbola - Nigerian polymath known for pioneering work in human language technology for African languages.',
   keywords: 'Tunde Adegbola, language technology, African languages, Yoruba, Igbo, Hausa, speech recognition, text-to-speech, localization',
   authors: [{ name: 'Tunde Adegbola' }],
+  icons: {
+    icon: '/favicon.svg',
+    shortcut: '/favicon.svg',
+    apple: '/favicon.svg',
+  },
   openGraph: {
     title: 'Tunde Adegbola - Engineer, Linguist, Technologist',
     description: 'Technology is only truly transformative when it speaks your language.',
