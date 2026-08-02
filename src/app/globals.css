@@ -6,12 +6,17 @@
   html {
     scroll-behavior: smooth;
   }
-  
+
   body {
     @apply antialiased;
     background-image: url('/fabric_of_squares_gray.png');
     background-repeat: repeat;
     background-attachment: fixed;
+  }
+
+  /* Keep anchored sections clear of the fixed pill navigation */
+  section[id] {
+    scroll-margin-top: 6rem;
   }
 }
 
@@ -32,5 +37,15 @@
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+
+  /* Horizontal tab strip on mobile: scrollable, but without a visible bar */
+  .scrollbar-none {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
   }
 } 
