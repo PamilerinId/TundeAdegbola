@@ -2,6 +2,16 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import Image from 'next/image'
+import GallerySection from '@/components/GallerySection'
+import InviteSection from '@/components/InviteSection'
+
+const NAV_LINKS = [
+  { href: '#about', label: 'About' },
+  { href: '#work', label: 'Work' },
+  { href: '#gallery', label: 'Gallery' },
+  { href: '#invite', label: 'Invite T.A' },
+  { href: '#contact', label: 'Contact' },
+]
 
 export default function Home() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -24,10 +34,10 @@ export default function Home() {
   useEffect(() => {
     // Check if popup should be shown (within event period and not dismissed)
     const checkEventPopup = () => {
-      const eventEndDate = new Date('2025-08-08') // 1 week from now
+      const eventEndDate = new Date('2025-08-08')
       const currentDate = new Date()
       const isDismissed = localStorage.getItem('ta-70th-event-dismissed')
-      
+
       if (currentDate <= eventEndDate && !isDismissed) {
         // Show popup after a short delay for better UX
         setTimeout(() => {
@@ -70,11 +80,11 @@ export default function Home() {
     <div className="min-h-screen bg-stone-50 relative overflow-hidden">
       {/* Event Popup Modal */}
       {showEventPopup && (
-        <div 
+        <div
           className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
           onClick={handleCloseEventPopup}
         >
-          <div 
+          <div
             className="relative bg-white rounded-3xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden transform transition-all duration-300 ease-out scale-100 opacity-100"
             onClick={(e) => e.stopPropagation()}
           >
@@ -88,9 +98,9 @@ export default function Home() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
-            
+
             {/* Event poster */}
-            <div 
+            <div
               className="relative w-full h-full min-h-[400px] md:min-h-[500px] cursor-pointer group"
               onClick={handleOpenFullImage}
             >
@@ -111,12 +121,12 @@ export default function Home() {
                 </div>
               </div>
             </div>
-            
+
             {/* Optional overlay content */}
             <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-6 pointer-events-none">
               <div className="text-white text-center">
                 <h3 className="text-xl md:text-2xl font-bold mb-2">Join Us in Celebrating!</h3>
-                <p className="text-white/90 text-sm md:text-base mb-2">Tunde Adegbola at 70 - A Festival of Language, Technology & Culture</p>
+                <p className="text-white/90 text-sm md:text-base mb-2">Tunde Adegbola at 70 - A Festival of Language, Technology &amp; Culture</p>
                 <p className="text-white/70 text-xs md:text-sm flex items-center justify-center gap-1">
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
@@ -131,11 +141,11 @@ export default function Home() {
 
       {/* Full Image Viewer Modal */}
       {showFullImage && (
-        <div 
+        <div
           className="fixed inset-0 z-[10000] flex items-center justify-center p-4 bg-black/90 backdrop-blur-sm"
           onClick={handleCloseFullImage}
         >
-          <div 
+          <div
             className="relative w-full h-full max-w-7xl max-h-full"
             onClick={(e) => e.stopPropagation()}
           >
@@ -149,7 +159,7 @@ export default function Home() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
-            
+
             {/* Full-size image */}
             <div className="relative w-full h-full">
               <Image
@@ -161,7 +171,7 @@ export default function Home() {
                 sizes="100vw"
               />
             </div>
-            
+
             {/* Download/Info overlay */}
             <div className="absolute bottom-4 left-4 right-4">
               <div className="bg-black/50 backdrop-blur-sm rounded-2xl p-4 text-white text-center">
@@ -176,27 +186,28 @@ export default function Home() {
           </div>
         </div>
       )}
-      
+
       {/* Fabric texture background */}
-      <div 
+      <div
         className="fixed inset-0 opacity-30 bg-repeat"
         style={{
           backgroundImage: 'url(/fabric_of_squares_gray.png)',
           backgroundSize: '200px 200px'
         }}
       ></div>
-      
-      {/* Mobile Navigation */}
+
+      {/* Navigation */}
       <nav className="fixed top-4 left-4 right-4 md:top-6 md:left-1/2 md:transform md:-translate-x-1/2 md:right-auto md:w-auto z-50">
         <div className="bg-white/90 backdrop-blur-md border border-stone-200 rounded-full shadow-lg">
-          <div className="flex items-center justify-between md:justify-center md:space-x-8 px-4 md:px-8 py-3">
-            <div className="text-stone-800 font-bold text-sm">Tunde Adegbola</div>
-            
+          <div className="flex items-center justify-between md:justify-center md:space-x-6 px-4 md:px-8 py-3">
+            <div className="text-stone-800 font-bold text-sm whitespace-nowrap">Tunde Adegbola</div>
+
             {/* Mobile menu button */}
-            <button 
+            <button
               className="md:hidden w-8 h-8 flex items-center justify-center relative"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               aria-label="Toggle menu"
+              aria-expanded={isMenuOpen}
             >
               <div className="w-5 h-4 relative flex flex-col justify-between">
                 <div className={`w-full h-0.5 bg-stone-600 transform transition-all duration-300 origin-center ${isMenuOpen ? 'rotate-45 translate-y-1.5' : ''}`}></div>
@@ -204,49 +215,36 @@ export default function Home() {
                 <div className={`w-full h-0.5 bg-stone-600 transform transition-all duration-300 origin-center ${isMenuOpen ? '-rotate-45 -translate-y-1.5' : ''}`}></div>
               </div>
             </button>
-            
+
             {/* Desktop navigation */}
-            <div className="hidden md:flex space-x-6 text-sm">
-              <a href="#about" className="text-stone-600 hover:text-stone-900 transition-colors">About</a>
-              <a href="#work" className="text-stone-600 hover:text-stone-900 transition-colors">Work</a>
-              <a href="#speaking" className="text-stone-600 hover:text-stone-900 transition-colors">Speaking</a>
-              <a href="#contact" className="text-stone-600 hover:text-stone-900 transition-colors">Contact</a>
+            <div className="hidden md:flex space-x-5 text-sm">
+              {NAV_LINKS.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  className="text-stone-600 hover:text-stone-900 transition-colors whitespace-nowrap"
+                >
+                  {link.label}
+                </a>
+              ))}
             </div>
           </div>
         </div>
-        
+
         {/* Mobile menu dropdown - positioned absolutely */}
-        <div className={`md:hidden absolute top-full left-0 right-0 mt-2 bg-white/95 backdrop-blur-md border border-stone-200 rounded-2xl shadow-lg overflow-hidden transition-all duration-300 ease-in-out ${isMenuOpen ? 'max-h-64 opacity-100 translate-y-0' : 'max-h-0 opacity-0 -translate-y-2'}`}>
+        <div className={`md:hidden absolute top-full left-0 right-0 mt-2 bg-white/95 backdrop-blur-md border border-stone-200 rounded-2xl shadow-lg overflow-hidden transition-all duration-300 ease-in-out ${isMenuOpen ? 'max-h-96 opacity-100 translate-y-0' : 'max-h-0 opacity-0 -translate-y-2'}`}>
           <div className="p-4">
             <div className="flex flex-col space-y-1">
-              <a 
-                href="#about" 
-                className="text-stone-600 hover:text-stone-900 hover:bg-stone-50 transition-all py-3 px-4 rounded-xl text-sm font-medium" 
-                onClick={() => setIsMenuOpen(false)}
-              >
-                About
-              </a>
-              <a 
-                href="#work" 
-                className="text-stone-600 hover:text-stone-900 hover:bg-stone-50 transition-all py-3 px-4 rounded-xl text-sm font-medium" 
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Work
-              </a>
-              <a 
-                href="#speaking" 
-                className="text-stone-600 hover:text-stone-900 hover:bg-stone-50 transition-all py-3 px-4 rounded-xl text-sm font-medium" 
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Speaking
-              </a>
-              <a 
-                href="#contact" 
-                className="text-stone-600 hover:text-stone-900 hover:bg-stone-50 transition-all py-3 px-4 rounded-xl text-sm font-medium" 
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Contact
-              </a>
+              {NAV_LINKS.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  className="text-stone-600 hover:text-stone-900 hover:bg-stone-50 transition-all py-3 px-4 rounded-xl text-sm font-medium"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  {link.label}
+                </a>
+              ))}
             </div>
           </div>
         </div>
@@ -265,26 +263,32 @@ export default function Home() {
                 </h1>
                 <div className="w-16 md:w-24 h-1 bg-amber-600 mx-auto lg:mx-0"></div>
               </div>
-              
+
               <p className="text-lg sm:text-xl lg:text-2xl text-stone-600 leading-relaxed max-w-lg mx-auto lg:mx-0">
                 Nigerian polymath pioneering the digital transformation of African languages through technology, research, and cultural advocacy.
               </p>
-              
+
               <div className="flex flex-col sm:flex-row gap-4 pt-4 justify-center lg:justify-start">
-                <button className="bg-stone-900 text-white px-6 md:px-8 py-3 md:py-4 rounded-full font-medium hover:bg-stone-800 active:bg-stone-800 transition-all transform active:scale-95 text-sm md:text-base">
-                  Explore Work
-                </button>
-                <button className="border border-stone-400 text-stone-700 px-6 md:px-8 py-3 md:py-4 rounded-full font-medium hover:bg-stone-100 active:bg-stone-100 transition-all text-sm md:text-base">
+                <a
+                  href="#invite"
+                  className="inline-flex items-center justify-center bg-stone-900 text-white px-6 md:px-8 py-3 md:py-4 rounded-full font-medium hover:bg-stone-800 active:bg-stone-800 transition-all transform active:scale-95 text-sm md:text-base"
+                >
+                  Invite T.A
+                </a>
+                <a
+                  href="#about"
+                  className="inline-flex items-center justify-center border border-stone-400 text-stone-700 px-6 md:px-8 py-3 md:py-4 rounded-full font-medium hover:bg-stone-100 active:bg-stone-100 transition-all text-sm md:text-base"
+                >
                   Read Biography
-                </button>
+                </a>
               </div>
             </div>
-            
+
             {/* Right side - Portrait */}
             <div className="relative order-1 lg:order-2">
               <div className="relative w-full h-80 sm:h-96 md:h-[500px] lg:h-[600px] rounded-3xl overflow-hidden bg-gradient-to-br from-stone-100 to-stone-200 shadow-2xl mx-auto max-w-sm lg:max-w-none">
-                <Image 
-                  src="/ta_no_bg.png" 
+                <Image
+                  src="/ta_no_bg.png"
                   alt="Tunde Adegbola - Nigerian polymath and language technology pioneer"
                   fill
                   className="object-cover object-center"
@@ -292,14 +296,14 @@ export default function Home() {
                   sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                 />
               </div>
-              
+
               {/* Floating elements - Smaller on mobile */}
               <div className="absolute -top-4 md:-top-8 -right-4 md:-right-8 w-16 md:w-32 h-16 md:h-32 bg-amber-200 rounded-full opacity-60 animate-pulse"></div>
               <div className="absolute -bottom-4 md:-bottom-8 -left-4 md:-left-8 w-12 md:w-24 h-12 md:h-24 bg-stone-300 rounded-full opacity-40 animate-pulse delay-1000"></div>
             </div>
           </div>
         </div>
-        
+
         {/* Scroll indicator */}
         <div className="absolute bottom-4 md:bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
           <div className="w-5 md:w-6 h-8 md:h-10 border-2 border-stone-400 rounded-full flex justify-center">
@@ -319,39 +323,40 @@ export default function Home() {
               </h2>
               <div className="w-12 md:w-16 h-1 bg-amber-600 mx-auto lg:mx-0"></div>
             </div>
-            
+
             {/* Right - Content */}
             <div className="lg:col-span-2 space-y-6 md:space-y-8">
               <div className="space-y-4 md:space-y-6 text-base md:text-lg text-stone-700 leading-relaxed">
                 <p>
-                  Born August 1, 1955, in Ibadan, Nigeria, Tunde Adegbola is a scientist, musician, engineer, linguist, and cultural activist who has dedicated his life to bridging African heritage with modern innovation.
+                  Born on 1 August 1955 at Shagamu, in the then Western Region of Nigeria, Tunde Adegbola is a consulting engineer, scientist, musician, linguist and culture activist who has dedicated his life to integrating modern technology with African heritage.
                 </p>
                 <p>
-                  With degrees in electrical engineering, computer science, and a PhD in information science specializing in human language technology, he has spent over four decades at the intersection of language, technology, and culture.
+                  With degrees in electrical engineering and computer science, and a PhD in information science specialising in human language technology, he has spent over four decades at the intersection of language, technology and culture.
                 </p>
                 <p>
                   As founder and executive director of <strong>Alt-i (African Languages Technology Initiative)</strong>, he has pioneered the development of speech recognition, text-to-speech synthesis, and machine translation technologies for African languages, making digital technology accessible to millions.
                 </p>
               </div>
-              
+
               {/* Key achievements - Stack on mobile */}
               <div className="grid md:grid-cols-2 gap-6 md:gap-8 pt-6 md:pt-8">
                 <div className="space-y-3 md:space-y-4">
                   <h3 className="text-lg md:text-xl font-semibold text-stone-900">Language Technology</h3>
                   <ul className="space-y-2 text-stone-600 text-sm md:text-base">
-                    <li>• Speech recognition for Yoruba, Igbo, Hausa</li>
-                    <li>• Microsoft Windows localization</li>
+                    <li>• Speech recognition for Yoruba, Igbo and Hausa</li>
+                    <li>• Localisation of Microsoft Windows and Office Suite</li>
                     <li>• Yoruba keyboard development</li>
                     <li>• Text-to-speech synthesis</li>
+                    <li>• Computational morphology induction of Yoruba</li>
                   </ul>
                 </div>
                 <div className="space-y-3 md:space-y-4">
-                  <h3 className="text-lg md:text-xl font-semibold text-stone-900">Broadcasting & Media</h3>
+                  <h3 className="text-lg md:text-xl font-semibold text-stone-900">Broadcasting &amp; Media Projects</h3>
                   <ul className="space-y-2 text-stone-600 text-sm md:text-base">
                     <li>• Africa Independent Television (AIT)</li>
-                    <li>• Channels Television setup</li>
-                    <li>• West Africa Democracy Radio</li>
-                    <li>• São Tomé and Príncipe projects</li>
+                    <li>• Channels Television</li>
+                    <li>• West Africa Democracy Radio, Senegal</li>
+                    <li>• Radio stations in Angolares and Neves, São Tomé and Príncipe</li>
                   </ul>
                 </div>
               </div>
@@ -372,9 +377,9 @@ export default function Home() {
               Pioneering technologies and initiatives that bridge the digital divide for African languages
             </p>
           </div>
-          
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-            {/* Alt-i Initiative */}
+
+          <div className="grid sm:grid-cols-2 gap-6 md:gap-8">
+            {/* Alt-i */}
             <div className="group relative bg-white/80 backdrop-blur-sm rounded-3xl p-6 md:p-8 shadow-lg hover:shadow-xl active:shadow-xl transition-all duration-300 hover:transform hover:scale-105 active:scale-105">
               <div className="absolute inset-0 bg-gradient-to-br from-amber-50 to-stone-50 rounded-3xl opacity-0 group-hover:opacity-100 group-active:opacity-100 transition-opacity"></div>
               <div className="relative">
@@ -383,7 +388,7 @@ export default function Home() {
                     <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
                   </svg>
                 </div>
-                <h3 className="text-xl md:text-2xl font-semibold text-stone-900 mb-3 md:mb-4">Alt-i Initiative</h3>
+                <h3 className="text-xl md:text-2xl font-semibold text-stone-900 mb-3 md:mb-4">Alt-i</h3>
                 <p className="text-stone-600 mb-4 md:mb-6 leading-relaxed text-sm md:text-base">
                   Founded in 2002, the African Languages Technology Initiative develops resources to facilitate ICT engagement in African languages, addressing technology as a factor in language preservation.
                 </p>
@@ -407,17 +412,37 @@ export default function Home() {
                 </div>
                 <h3 className="text-xl md:text-2xl font-semibold text-stone-900 mb-3 md:mb-4">TIWA Systems</h3>
                 <p className="text-stone-600 mb-4 md:mb-6 leading-relaxed text-sm md:text-base">
-                  Established in 1985, pioneering digital technology in Nigeria through desktop publishing, nonlinear video editing, and broadcast station design for major Nigerian media houses.
+                  Established in 1985, pioneering digital technology in Nigeria. Introduced desktop publishing and computerised stock control to Nigerian publishing houses from 1985.
                 </p>
                 <div className="flex flex-wrap gap-2">
-                  <span className="px-3 py-1 bg-stone-200 text-stone-700 rounded-full text-xs md:text-sm">Broadcasting</span>
+                  <span className="px-3 py-1 bg-stone-200 text-stone-700 rounded-full text-xs md:text-sm">Publishing</span>
                   <span className="px-3 py-1 bg-amber-200 text-amber-700 rounded-full text-xs md:text-sm">Innovation</span>
                 </div>
               </div>
             </div>
 
+            {/* Broadcasting Innovation */}
+            <div className="group relative bg-white/80 backdrop-blur-sm rounded-3xl p-6 md:p-8 shadow-lg hover:shadow-xl active:shadow-xl transition-all duration-300 hover:transform hover:scale-105 active:scale-105">
+              <div className="absolute inset-0 bg-gradient-to-br from-stone-50 to-amber-50 rounded-3xl opacity-0 group-hover:opacity-100 group-active:opacity-100 transition-opacity"></div>
+              <div className="relative">
+                <div className="w-12 md:w-16 h-12 md:h-16 bg-stone-100 rounded-2xl flex items-center justify-center mb-4 md:mb-6 group-hover:bg-stone-200 group-active:bg-stone-200 transition-colors">
+                  <svg className="w-6 md:w-8 h-6 md:h-8 text-stone-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                  </svg>
+                </div>
+                <h3 className="text-xl md:text-2xl font-semibold text-stone-900 mb-3 md:mb-4">Broadcasting Innovation</h3>
+                <p className="text-stone-600 mb-4 md:mb-6 leading-relaxed text-sm md:text-base">
+                  Introduced nonlinear video editing and virtual sets to Nigerian television stations, and designed broadcast systems for major media houses across West Africa.
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <span className="px-3 py-1 bg-stone-200 text-stone-700 rounded-full text-xs md:text-sm">Broadcasting</span>
+                  <span className="px-3 py-1 bg-amber-200 text-amber-700 rounded-full text-xs md:text-sm">Engineering</span>
+                </div>
+              </div>
+            </div>
+
             {/* Yoruba Keyboard */}
-            <div className="group relative bg-white/80 backdrop-blur-sm rounded-3xl p-6 md:p-8 shadow-lg hover:shadow-xl active:shadow-xl transition-all duration-300 hover:transform hover:scale-105 active:scale-105 md:col-span-2 lg:col-span-1">
+            <div className="group relative bg-white/80 backdrop-blur-sm rounded-3xl p-6 md:p-8 shadow-lg hover:shadow-xl active:shadow-xl transition-all duration-300 hover:transform hover:scale-105 active:scale-105">
               <div className="absolute inset-0 bg-gradient-to-br from-amber-50 to-stone-50 rounded-3xl opacity-0 group-hover:opacity-100 group-active:opacity-100 transition-opacity"></div>
               <div className="relative">
                 <div className="w-12 md:w-16 h-12 md:h-16 bg-amber-100 rounded-2xl flex items-center justify-center mb-4 md:mb-6 group-hover:bg-amber-200 group-active:bg-amber-200 transition-colors">
@@ -439,55 +464,11 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Speaking Section - Mobile optimized */}
-      <section id="speaking" className="relative py-16 md:py-32 bg-white/60 backdrop-blur-sm">
-        <div className="max-w-6xl mx-auto px-4 md:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-8 md:gap-16 items-center">
-            {/* Left - Image */}
-            <div className="relative order-2 lg:order-1">
-              <div className="relative w-full h-64 md:h-96 rounded-3xl overflow-hidden bg-stone-200 shadow-xl mx-auto max-w-sm lg:max-w-none">
-                <Image 
-                  src="/1 344.JPG" 
-                  alt="Tunde Adegbola speaking at a conference - sharing insights on language technology and African cultural preservation"
-                  fill
-                  className="object-cover object-center"
-                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                />
-              </div>
-            </div>
-            
-            {/* Right - Content */}
-            <div className="space-y-6 md:space-y-8 order-1 lg:order-2 text-center lg:text-left">
-              <div>
-                <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light text-stone-900 mb-4 md:mb-6">
-                  Speaking
-                </h2>
-                <div className="w-12 md:w-16 h-1 bg-amber-600 mx-auto lg:mx-0 mb-6 md:mb-8"></div>
-                <p className="text-lg md:text-xl text-stone-600 leading-relaxed">
-                  Sharing insights on language technology, digital transformation, and African cultural preservation at conferences and forums worldwide.
-                </p>
-              </div>
-              
-              <div className="space-y-4 md:space-y-6">
-                <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-4 md:p-6 shadow-sm">
-                  <h3 className="text-base md:text-lg font-semibold text-stone-900 mb-2">TEDx Talks & Conferences</h3>
-                  <p className="text-stone-600 text-sm md:text-base">Regular speaker at technology and cultural preservation events across Africa and beyond.</p>
-                </div>
-                
-                <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-4 md:p-6 shadow-sm">
-                  <h3 className="text-base md:text-lg font-semibold text-stone-900 mb-2">Academic Lectures</h3>
-                  <p className="text-stone-600 text-sm md:text-base">Teaching artificial intelligence at University of Lagos, University of Ibadan, and Afe Babalola University.</p>
-                </div>
-                
-                <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-4 md:p-6 shadow-sm">
-                  <h3 className="text-base md:text-lg font-semibold text-stone-900 mb-2">UNESCO & Pan-African Forums</h3>
-                  <p className="text-stone-600 text-sm md:text-base">Advocating for indigenous languages and digital inclusion at international policy forums.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Gallery Section */}
+      <GallerySection />
+
+      {/* Invite T.A Section */}
+      <InviteSection />
 
       {/* Contact Section - Mobile optimized */}
       <section id="contact" className="relative py-16 md:py-32">
@@ -502,7 +483,7 @@ export default function Home() {
                 Interested in collaboration, speaking engagements, or learning more about African language technology and cultural preservation?
               </p>
             </div>
-            
+
             {/* Contact Information */}
             <div className="space-y-4 pt-6 md:pt-8">
               <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 md:p-8 shadow-sm max-w-md mx-auto">
@@ -511,31 +492,17 @@ export default function Home() {
                     <svg className="w-5 h-5 text-stone-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                     </svg>
-                    <a 
-                      href="mailto:iam@tundeadegbola.com" 
+                    <a
+                      href="mailto:iam@tundeadegbola.com"
                       className="text-stone-700 hover:text-stone-900 transition-colors font-medium"
                     >
                       iam@tundeadegbola.com
                     </a>
                   </div>
-                  
-                  {/* <div className="flex items-center justify-center gap-3">
-                    <svg className="w-5 h-5 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-                    </svg>
-                    <a 
-                      href="https://www.linkedin.com/in/tunde-adegbola-2659681/" 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="text-blue-600 hover:text-blue-700 transition-colors font-medium"
-                    >
-                      LinkedIn Profile
-                    </a>
-                  </div> */}
                 </div>
               </div>
             </div>
-            
+
             {/* Social Links - Mobile optimized */}
             <div className="flex justify-center space-x-6 md:space-x-8 pt-12 md:pt-16">
               <a href="https://en.wikipedia.org/wiki/Tunde_Adegbola" target="_blank" rel="noopener noreferrer" className="group">
@@ -546,7 +513,7 @@ export default function Home() {
                 </div>
                 <p className="text-xs text-stone-500 mt-2">Wikipedia</p>
               </a>
-              
+
               <a href="https://www.linkedin.com/in/tunde-adegbola-2659681/" target="_blank" rel="noopener noreferrer" className="group">
                 <div className="w-10 md:w-12 h-10 md:h-12 bg-blue-100 rounded-full flex items-center justify-center group-hover:bg-blue-200 group-active:bg-blue-200 transition-colors">
                   <svg className="w-5 md:w-6 h-5 md:h-6 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
@@ -555,7 +522,7 @@ export default function Home() {
                 </div>
                 <p className="text-xs text-stone-500 mt-2">LinkedIn</p>
               </a>
-              
+
               <a href="https://instagram.com/drtundeadegbola" target="_blank" rel="noopener noreferrer" className="group">
                 <div className="w-10 md:w-12 h-10 md:h-12 bg-stone-200 rounded-full flex items-center justify-center group-hover:bg-stone-300 group-active:bg-stone-300 transition-colors">
                   <svg className="w-5 md:w-6 h-5 md:h-6 text-stone-600" fill="currentColor" viewBox="0 0 24 24">
@@ -564,13 +531,13 @@ export default function Home() {
                 </div>
                 <p className="text-xs text-stone-500 mt-2">Instagram</p>
               </a>
-              
+
               <a href="https://alt-i.org" target="_blank" rel="noopener noreferrer" className="group">
                 <div className="w-10 md:w-12 h-10 md:h-12 bg-amber-200 rounded-full flex items-center justify-center group-hover:bg-amber-300 group-active:bg-amber-300 transition-colors">
                   <svg className="w-5 md:w-6 h-5 md:h-6 text-amber-700" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
                   </svg>
-              </div>
+                </div>
                 <p className="text-xs text-stone-500 mt-2">Alt-i</p>
               </a>
             </div>
@@ -586,7 +553,7 @@ export default function Home() {
               <p className="text-stone-300 text-sm md:text-base">© {new Date().getFullYear()} Tunde Adegbola. All rights reserved.</p>
             </div>
             <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-6 text-xs md:text-sm text-stone-400">
-              <span>Founder & Director, Alt-i</span>
+              <span>Founder &amp; Director, Alt-i</span>
               <span className="hidden sm:inline">•</span>
               <span>Language Technology Pioneer</span>
             </div>
@@ -595,4 +562,4 @@ export default function Home() {
       </footer>
     </div>
   )
-} 
+}
